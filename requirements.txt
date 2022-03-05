@@ -2,3 +2,4 @@ opencv-python-headless<4.3
 tensorflow==2.7.0
 numpy
 tensorflow-hub==0.12.0
+pyautogui
