@@ -12,13 +12,16 @@ movenet = model.signatures["serving_default"]
 
 # Using Webcam
 capture = cv2.VideoCapture(0)
+counter = 0
 
 while True:
+    counter += 1
+    if counter % 2 == 0:
+        continue # skip alternate frames to speed up processing
+
     isTrue, frame = capture.read()
     frame = frame[:, 280:1000, :]
     frame = cv2.flip(frame, 1)
-
-    # Load the input image.
 
     frame_processed = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     frame_processed = tf.expand_dims(frame_processed, axis=0)
@@ -30,16 +33,20 @@ while True:
     outputs = movenet(frame_processed[:,:,:,:3])
     keypoints = outputs["output_0"]
 
-    print(keypoints)
-    keypoints = keypoints[keypoints[:,:,:,2] > threshold]
+    keypoints = keypoints[0][0][1:3] # take only left and right eye
+    keypoints = keypoints[keypoints[:,2] > threshold] # check threshold
 
+    sum_y, num_y= 0, 0
     for keypoint in keypoints:
         point_x = keypoint[1].numpy() * frame.shape[1]
         point_y = keypoint[0].numpy() * frame.shape[0]
-        print(point_x, point_y)
+        sum_y += point_y
+        num_y += 1
 
         frame = cv2.drawMarker(frame, (round(point_x), round(point_y)), (0,0,255), markerType=cv2.MARKER_STAR, 
         markerSize=20, thickness=2, line_type=cv2.LINE_AA)
+
+    avg_y = sum_y / num_y if num_y !=0 else 0
 
     cv2.imshow("Video", frame)
     key = cv2.waitKey(1)
