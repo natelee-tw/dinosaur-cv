@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 import pyautogui
 import tensorflow as tf
 import tensorflow_hub as hub
@@ -8,7 +7,7 @@ from enum import Enum, auto
 from collections import deque
 
 # Configs
-threshold = 0.3
+confidence_threshold = 0.3
 min_jump_disp = 20
 frame_reload_counter = 3
 
@@ -43,7 +42,7 @@ while True:
     keypoints = outputs["output_0"]
 
     keypoints = keypoints[0][0][1:3] # take only left and right eye
-    keypoints = keypoints[keypoints[:,2] > threshold] # check threshold
+    keypoints = keypoints[keypoints[:,2] > confidence_threshold] # check threshold
 
     sum_y, num_y = 0, 0
     for keypoint in keypoints:
