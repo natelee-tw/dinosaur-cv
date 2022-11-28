@@ -19,7 +19,8 @@ Using Posenet, we detect key body points (keypoints) and find the points of the 
 - Click on the browser to start the game
 - Start jumping and have fun!
 
-Click below to see demo video :)
+Click below to see demo video :) 
+https://youtu.be/XzWKxh2am80
 <a href="https://youtu.be/XzWKxh2am80" title="Playing Chrome Dinosaur Game with Computer Vision">
   <p align="center">
     <img width="75%" src="img/thumbnail.png" alt="Playing Chrome Dinosaur Game with Computer Vision"/>
